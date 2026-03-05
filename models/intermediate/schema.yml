@@ -1,0 +1,48 @@
+version: 2
+
+models:
+  - name: int_trips_enriched
+    description: "Enriched trips with duration, revenue, fraud indicators and payment info"
+    columns:
+      - name: trip_id
+        tests: [unique, not_null]
+      - name: trip_duration_minutes
+        description: "Duration from pickup to dropoff in minutes"
+      - name: net_revenue_gbp
+        description: "Actual fare minus payment processing fee"
+      - name: is_extreme_surge
+        description: "True if surge multiplier exceeds 10x — fraud indicator"
+      - name: is_duplicate_payment
+        description: "True if same trip has more than one successful payment"
+      - name: is_failed_payment_on_completed_trip
+        description: "True if trip completed but no successful payment recorded"
+
+  - name: int_driver_metrics
+    description: "Driver-level aggregated trip and revenue metrics"
+    columns:
+      - name: driver_id
+        tests: [unique, not_null]
+      - name: lifetime_trips
+        description: "Total trips assigned to driver"
+      - name: is_churned
+        description: "True if driver has had no trips in last 30 days"
+
+  - name: int_rider_metrics
+    description: "Rider-level aggregated spend and lifetime value metrics"
+    columns:
+      - name: rider_id
+        tests: [unique, not_null]
+      - name: lifetime_value_gbp
+        description: "Total amount spent by rider across all completed trips"
+      - name: rider_segment
+        description: "high_value / mid_value / low_value / inactive based on LTV"
+
+  - name: int_payment_analysis
+    description: "Payment records joined with trip data for anomaly detection"
+    columns:
+      - name: payment_id
+        tests: [unique, not_null]
+      - name: is_failed_on_completed
+        description: "Fraud indicator — payment failed on a completed trip"
+      - name: is_amount_mismatch
+        description: "Fraud indicator — payment amount differs from trip fare"
