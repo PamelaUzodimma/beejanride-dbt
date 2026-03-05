@@ -1,0 +1,54 @@
+name: dbt CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  dbt-ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dbt
+        run: pip install dbt-bigquery
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up dbt profile
+        run: |
+          mkdir -p ~/.dbt
+          cat > ~/.dbt/profiles.yml << 'PROFILE'
+          beejanride:
+            target: dev
+            outputs:
+              dev:
+                type: bigquery
+                method: oauth
+                project: beejan-analytics
+                dataset: beejanride_dev
+                location: US
+                threads: 4
+                timeout_seconds: 300
+          PROFILE
+
+      - name: Install dbt packages
+        run: dbt deps
+
+      - name: Run dbt build
+        run: dbt build
+
+      - name: Generate dbt docs
+        run: dbt docs generate

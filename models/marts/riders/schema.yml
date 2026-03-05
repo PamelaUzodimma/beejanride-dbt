@@ -2,20 +2,48 @@ version: 2
 
 models:
   - name: dim_riders
-    description: "Rider dimension — enriched with LTV, segment, payment preferences"
+    description: "Rider dimension table — enriched with lifetime value, segment classification and payment preferences."
     config:
       meta:
         owner: "data-engineering"
         tags: ["operations"]
     columns:
       - name: rider_id
+        description: "Unique rider identifier — primary key"
         tests: [unique, not_null]
+      - name: country
+        description: "Country of rider registration"
+      - name: signup_date
+        description: "Date rider created their account"
+      - name: referral_code
+        description: "Referral code used during signup. Null if no referral"
+      - name: is_referred
+        description: "TRUE if rider signed up using a referral code"
+      - name: total_trips
+        description: "Total trips requested by rider across all statuses"
+      - name: completed_trips
+        description: "Total successfully completed trips"
+      - name: lifetime_value_gbp
+        description: "Total GBP spent across all completed trips — key business metric"
+      - name: avg_spend_gbp
+        description: "Average spend per completed trip"
       - name: rider_segment
+        description: "LTV segment: high_value (100+), mid_value (50+), low_value (>0), inactive"
         tests:
           - accepted_values:
               arguments:
                 values: ['high_value', 'mid_value', 'low_value', 'inactive']
-      - name: lifetime_value_gbp
-        description: "Total GBP spent across all completed trips"
+      - name: corporate_trips
+        description: "Number of trips booked under corporate account"
+      - name: card_payments
+        description: "Number of trips paid by card"
+      - name: wallet_payments
+        description: "Number of trips paid by wallet"
+      - name: cash_payments
+        description: "Number of trips paid by cash"
       - name: preferred_payment_method
-        description: "Most used payment method by this rider"
+        description: "Most frequently used payment method by this rider"
+      - name: first_trip_at
+        description: "Timestamp of rider's first trip"
+      - name: last_trip_at
+        description: "Timestamp of rider's most recent trip"

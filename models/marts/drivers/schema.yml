@@ -2,21 +2,54 @@ version: 2
 
 models:
   - name: dim_drivers
-    description: "Driver dimension — enriched with lifetime metrics, tier, churn status and city info"
+    description: "Driver dimension table — enriched with lifetime metrics, revenue tier, churn status and city info. Slowly changing via SCD2 snapshot."
     config:
       meta:
         owner: "data-engineering"
         tags: ["operations"]
     columns:
       - name: driver_id
+        description: "Unique driver identifier — primary key"
         tests: [unique, not_null]
+      - name: driver_status
+        description: "Current status: active, suspended, or inactive"
+      - name: driver_rating
+        description: "Average rating from rider feedback (0-5)"
+      - name: onboarding_date
+        description: "Date driver completed onboarding and went live"
+      - name: vehicle_id
+        description: "Current vehicle assigned to driver"
+      - name: city_id
+        description: "City where driver operates"
+      - name: city_name
+        description: "Human-readable city name"
+      - name: country
+        description: "Country of operation"
+      - name: lifetime_trips
+        description: "Total trips assigned to driver across all statuses"
+      - name: completed_trips
+        description: "Total successfully completed trips"
+      - name: cancelled_trips
+        description: "Total trips cancelled by driver or rider"
+      - name: no_show_trips
+        description: "Total trips where driver did not show up"
+      - name: completion_rate_pct
+        description: "Percentage of assigned trips completed (completed/lifetime * 100)"
+      - name: total_revenue_gbp
+        description: "Sum of actual fares from all completed trips"
+      - name: avg_fare_gbp
+        description: "Average fare per completed trip"
+      - name: corporate_trips
+        description: "Number of corporate account trips completed"
+      - name: first_trip_at
+        description: "Timestamp of driver's first ever trip"
+      - name: last_trip_at
+        description: "Timestamp of driver's most recent trip"
+      - name: is_churned
+        description: "TRUE if driver has had no trips in the last 30 days"
       - name: driver_tier
-        description: "platinum / gold / silver / bronze based on total revenue"
+        description: "Revenue-based tier: platinum (500+), gold (200+), silver (50+), bronze"
         tests:
           - accepted_values:
               arguments:
                 values: ['platinum', 'gold', 'silver', 'bronze']
-      - name: completion_rate_pct
-        description: "Percentage of assigned trips completed"
-      - name: is_churned
-        description: "True if no trips in last 30 days"
