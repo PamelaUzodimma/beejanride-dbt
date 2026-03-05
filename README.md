@@ -266,3 +266,22 @@ dbt docs serve
 Pamela Uzodimma
 Data Engineering Project — BeejanRide Analytics Platform
 Built with dbt Core + BigQuery + Airbyte
+
+---
+
+## 📸 Screenshots
+
+### dbt Lineage Graph
+![dbt Lineage](docs/lineage.png)
+
+### dbt Lineage (Full View)
+![dbt Lineage Full](docs/lineage2.png)
+
+### Airbyte Sync
+![Airbyte Sync](docs/airbyte/airbyte_sync.png)
+
+### BigQuery Dataset
+![BigQuery](docs/beejanride.png)
+
+### dbt Build Results
+![dbt Build](docs/beejanride1.png)
