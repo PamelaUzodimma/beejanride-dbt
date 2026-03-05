@@ -1,0 +1,42 @@
+version: 2
+
+models:
+  - name: fct_trips
+    description: "Core fact table — one row per trip. Partitioned by trip_date, clustered by city and driver. Use for revenue, surge and fraud analysis."
+    meta:
+      owner: "data-engineering"
+      tags: ["finance", "operations", "fraud"]
+    columns:
+      - name: trip_id
+        description: "Unique trip identifier"
+        tests: [unique, not_null]
+      - name: trip_date
+        tests: [not_null]
+      - name: actual_fare_gbp
+        tests: [not_null]
+      - name: net_revenue_gbp
+        description: "Revenue after payment processing fees"
+      - name: trip_status
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['completed', 'cancelled', 'no_show']
+      - name: trip_type
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['corporate', 'personal']
+
+  - name: fct_payments
+    description: "Payment fact table — one row per payment attempt including failures"
+    meta:
+      owner: "data-engineering"
+      tags: ["finance", "fraud"]
+    columns:
+      - name: payment_id
+        tests: [unique, not_null]
+      - name: payment_status
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['success', 'failed']

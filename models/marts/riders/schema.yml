@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: dim_riders
+    description: "Rider dimension — enriched with LTV, segment, payment preferences"
+    meta:
+      owner: "data-engineering"
+      tags: ["operations"]
+    columns:
+      - name: rider_id
+        tests: [unique, not_null]
+      - name: rider_segment
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['high_value', 'mid_value', 'low_value', 'inactive']
+      - name: lifetime_value_gbp
+        description: "Total GBP spent across all completed trips"
+      - name: preferred_payment_method
+        description: "Most used payment method by this rider"

@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: dim_drivers
+    description: "Driver dimension — enriched with lifetime metrics, tier, churn status and city info"
+    meta:
+      owner: "data-engineering"
+      tags: ["operations"]
+    columns:
+      - name: driver_id
+        tests: [unique, not_null]
+      - name: driver_tier
+        description: "platinum / gold / silver / bronze based on total revenue"
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['platinum', 'gold', 'silver', 'bronze']
+      - name: completion_rate_pct
+        description: "Percentage of assigned trips completed"
+      - name: is_churned
+        description: "True if no trips in last 30 days"
