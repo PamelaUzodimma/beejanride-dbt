@@ -1,0 +1,62 @@
+version: 2
+
+models:
+  - name: stg_trips
+    description: "Cleaned and deduplicated trip records from raw source"
+    columns:
+      - name: trip_id
+        tests: [unique, not_null]
+      - name: trip_status
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['completed', 'cancelled', 'no_show']
+      - name: actual_fare_gbp
+        tests: [not_null]
+
+  - name: stg_drivers
+    description: "Cleaned driver profiles with standardized status values"
+    columns:
+      - name: driver_id
+        tests: [unique, not_null]
+      - name: driver_status
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['active', 'suspended', 'inactive']
+
+  - name: stg_riders
+    description: "Cleaned rider profiles"
+    columns:
+      - name: rider_id
+        tests: [unique, not_null]
+
+  - name: stg_payments
+    description: "Cleaned payment records with net amount calculated"
+    columns:
+      - name: payment_id
+        tests: [unique, not_null]
+      - name: trip_id
+        tests: [not_null]
+      - name: payment_status
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['success', 'failed']
+
+  - name: stg_cities
+    description: "Reference table for BeejanRide operating cities"
+    columns:
+      - name: city_id
+        tests: [unique, not_null]
+
+  - name: stg_driver_status_events
+    description: "Incremental driver online/offline event log — high volume"
+    columns:
+      - name: event_id
+        tests: [unique, not_null]
+      - name: driver_status
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['online', 'offline']

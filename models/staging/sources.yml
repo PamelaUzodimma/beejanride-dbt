@@ -1,0 +1,95 @@
+version: 2
+
+sources:
+  - name: beejanride_raw
+    database: beejan-analytics
+    schema: beejanride_dev_beejanride_raw
+    description: "Raw transactional data loaded via dbt seed (simulating Airbyte ingestion)"
+    config:
+      loaded_at_field: created_at
+      freshness:
+        warn_after: {count: 24, period: hour}
+        error_after: {count: 48, period: hour}
+
+    tables:
+      - name: trips_raw
+        description: "All trip records including completed, cancelled and no-show rides"
+        columns:
+          - name: trip_id
+            description: "Unique trip identifier"
+            tests:
+              - unique
+              - not_null
+          - name: rider_id
+            tests: [not_null]
+          - name: driver_id
+            tests: [not_null]
+          - name: city_id
+            tests: [not_null]
+          - name: status
+            tests:
+              - accepted_values:
+                  arguments:
+                    values: ['completed', 'cancelled', 'no_show']
+          - name: payment_method
+            tests:
+              - accepted_values:
+                  arguments:
+                    values: ['card', 'wallet', 'cash']
+
+      - name: drivers_raw
+        description: "Driver profiles and current status"
+        columns:
+          - name: driver_id
+            tests: [unique, not_null]
+          - name: driver_status
+            tests:
+              - accepted_values:
+                  arguments:
+                    values: ['active', 'suspended', 'inactive']
+
+      - name: riders_raw
+        description: "Rider profiles and signup information"
+        columns:
+          - name: rider_id
+            tests: [unique, not_null]
+
+      - name: payments_raw
+        description: "Payment transactions linked to trips"
+        columns:
+          - name: payment_id
+            tests: [unique, not_null]
+          - name: trip_id
+            tests: [not_null]
+          - name: payment_status
+            tests:
+              - accepted_values:
+                  arguments:
+                    values: ['success', 'failed']
+          - name: payment_provider
+            tests:
+              - accepted_values:
+                  arguments:
+                    values: ['stripe', 'paypal']
+
+      - name: cities_raw
+        description: "Cities where BeejanRide operates"
+        columns:
+          - name: city_id
+            tests: [unique, not_null]
+
+      - name: driver_status_events_raw
+        description: "High volume driver online/offline event log"
+        config:
+          loaded_at_field: event_timestamp
+          freshness:
+            warn_after: {count: 30, period: minute}
+            error_after: {count: 1, period: hour}
+        columns:
+          - name: event_id
+            tests: [unique, not_null]
+          - name: status
+            tests:
+              - accepted_values:
+                  arguments:
+                    values: ['online', 'offline']

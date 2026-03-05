@@ -1,0 +1,15 @@
+payment_id,trip_id,payment_status,payment_provider,amount,fee,currency,created_at
+P001,T001,success,stripe,13.00,0.38,GBP,2024-01-15 08:26:00
+P002,T002,success,stripe,22.50,0.65,GBP,2024-01-15 09:31:00
+P003,T003,success,paypal,15.00,0.44,GBP,2024-01-15 10:36:00
+P004,T004,failed,stripe,0.00,0.00,GBP,2024-01-15 11:06:00
+P005,T006,success,stripe,42.00,1.22,GBP,2024-01-16 08:46:00
+P006,T007,success,paypal,14.00,0.41,GBP,2024-01-16 09:26:00
+P007,T008,success,stripe,28.00,0.81,GBP,2024-01-16 10:51:00
+P008,T009,success,stripe,11.00,0.32,GBP,2024-01-17 08:21:00
+P009,T010,success,stripe,55.00,1.60,GBP,2024-01-17 17:36:00
+P010,T011,success,paypal,16.00,0.46,GBP,2024-01-18 08:31:00
+P011,T012,success,stripe,45.00,1.31,GBP,2024-01-18 09:56:00
+P012,T014,success,stripe,30.00,0.87,GBP,2024-01-19 14:41:00
+P013,T015,success,stripe,13.00,0.38,GBP,2024-01-20 08:23:00
+P014,T010,failed,stripe,55.00,0.00,GBP,2024-01-17 17:00:00

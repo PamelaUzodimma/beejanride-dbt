@@ -1,0 +1,27 @@
+version: 2
+
+seeds:
+  - name: trips_raw
+    description: "Seed data simulating raw trips from PostgreSQL source"
+    config:
+      schema: beejanride_raw
+  - name: drivers_raw
+    description: "Seed data simulating raw drivers"
+    config:
+      schema: beejanride_raw
+  - name: riders_raw
+    description: "Seed data simulating raw riders"
+    config:
+      schema: beejanride_raw
+  - name: payments_raw
+    description: "Seed data simulating raw payments"
+    config:
+      schema: beejanride_raw
+  - name: cities_raw
+    description: "Seed data simulating raw cities"
+    config:
+      schema: beejanride_raw
+  - name: driver_status_events_raw
+    description: "Seed data simulating driver status events"
+    config:
+      schema: beejanride_raw
