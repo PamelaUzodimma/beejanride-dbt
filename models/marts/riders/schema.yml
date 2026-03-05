@@ -3,9 +3,10 @@ version: 2
 models:
   - name: dim_riders
     description: "Rider dimension — enriched with LTV, segment, payment preferences"
-    meta:
-      owner: "data-engineering"
-      tags: ["operations"]
+    config:
+      meta:
+        owner: "data-engineering"
+        tags: ["operations"]
     columns:
       - name: rider_id
         tests: [unique, not_null]

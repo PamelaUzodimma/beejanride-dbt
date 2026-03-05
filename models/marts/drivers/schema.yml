@@ -3,9 +3,10 @@ version: 2
 models:
   - name: dim_drivers
     description: "Driver dimension — enriched with lifetime metrics, tier, churn status and city info"
-    meta:
-      owner: "data-engineering"
-      tags: ["operations"]
+    config:
+      meta:
+        owner: "data-engineering"
+        tags: ["operations"]
     columns:
       - name: driver_id
         tests: [unique, not_null]

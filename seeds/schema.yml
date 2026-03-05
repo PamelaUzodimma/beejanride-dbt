@@ -2,26 +2,40 @@ version: 2
 
 seeds:
   - name: trips_raw
-    description: "Seed data simulating raw trips from PostgreSQL source"
     config:
       schema: beejanride_raw
+      column_types:
+        requested_at: timestamp
+        pickup_at: timestamp
+        dropoff_at: timestamp
+        created_at: timestamp
+        updated_at: timestamp
+
   - name: drivers_raw
-    description: "Seed data simulating raw drivers"
     config:
       schema: beejanride_raw
+      column_types:
+        created_at: timestamp
+        updated_at: timestamp
+
   - name: riders_raw
-    description: "Seed data simulating raw riders"
     config:
       schema: beejanride_raw
+      column_types:
+        created_at: timestamp
+
   - name: payments_raw
-    description: "Seed data simulating raw payments"
     config:
       schema: beejanride_raw
+      column_types:
+        created_at: timestamp
+
   - name: cities_raw
-    description: "Seed data simulating raw cities"
     config:
       schema: beejanride_raw
+
   - name: driver_status_events_raw
-    description: "Seed data simulating driver status events"
     config:
       schema: beejanride_raw
+      column_types:
+        event_timestamp: timestamp

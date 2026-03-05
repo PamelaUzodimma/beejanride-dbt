@@ -2,13 +2,13 @@ version: 2
 
 models:
   - name: fct_trips
-    description: "Core fact table — one row per trip. Partitioned by trip_date, clustered by city and driver. Use for revenue, surge and fraud analysis."
-    meta:
-      owner: "data-engineering"
-      tags: ["finance", "operations", "fraud"]
+    description: "Core fact table — one row per trip. Partitioned by trip_date, clustered by city and driver."
+    config:
+      meta:
+        owner: "data-engineering"
+        tags: ["finance", "operations", "fraud"]
     columns:
       - name: trip_id
-        description: "Unique trip identifier"
         tests: [unique, not_null]
       - name: trip_date
         tests: [not_null]
@@ -29,9 +29,10 @@ models:
 
   - name: fct_payments
     description: "Payment fact table — one row per payment attempt including failures"
-    meta:
-      owner: "data-engineering"
-      tags: ["finance", "fraud"]
+    config:
+      meta:
+        owner: "data-engineering"
+        tags: ["finance", "fraud"]
     columns:
       - name: payment_id
         tests: [unique, not_null]
