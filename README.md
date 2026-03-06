@@ -4,7 +4,7 @@ A production-grade dbt analytics platform for **BeejanRide** — a fast-growing 
 
 ---
 
-## 📐 Architecture
+##  Architecture
 ```
 PostgreSQL (Supabase)
         │
@@ -31,7 +31,7 @@ intermediate
 
 ---
 
-## 🗂️ Project Structure
+##  Project Structure
 ```
 beejanride-dbt/
 ├── models/
@@ -51,7 +51,7 @@ beejanride-dbt/
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 | Layer | Tool |
 |-------|------|
@@ -63,7 +63,7 @@ beejanride-dbt/
 
 ---
 
-## 📊 Data Model (ERD)
+##  Data Model (ERD)
 ```
 trips_raw ──────────── drivers_raw
     │                       │
@@ -86,7 +86,7 @@ riders_raw
 
 ---
 
-## 🏗️ Layered Architecture
+##  Layered Architecture
 
 ### Staging Layer
 - One model per source table
@@ -113,7 +113,7 @@ riders_raw
 
 ---
 
-## 📸 Incremental Models
+##  Incremental Models
 
 ### Why Incremental?
 fct_trips and stg_driver_status_events use incremental materialization because:
@@ -133,7 +133,7 @@ fct_trips and stg_driver_status_events use incremental materialization because:
 
 ---
 
-## 🔍 Data Quality
+##  Data Quality
 
 ### Generic Tests (64 total)
 - not_null on all primary keys
@@ -153,7 +153,7 @@ fct_trips and stg_driver_status_events use incremental materialization because:
 
 ---
 
-## 📸 Snapshots (SCD Type 2)
+##  Snapshots (SCD Type 2)
 
 drivers_snapshot tracks historical changes to:
 - driver_status (active → suspended → inactive)
@@ -164,7 +164,7 @@ Uses check strategy on BigQuery for type compatibility.
 
 ---
 
-## 🚨 Fraud Detection Logic
+##  Fraud Detection Logic
 
 | Indicator | Logic |
 |-----------|-------|
@@ -175,7 +175,7 @@ Uses check strategy on BigQuery for type compatibility.
 
 ---
 
-## 📈 Supported Analytics Use Cases
+##  Supported Analytics Use Cases
 
 | Use Case | Model |
 |----------|-------|
@@ -192,7 +192,7 @@ Uses check strategy on BigQuery for type compatibility.
 
 ---
 
-## ⚙️ Airbyte Ingestion
+##  Airbyte Ingestion
 
 See docs/airbyte/airbyte_config.md for full configuration.
 
@@ -205,7 +205,7 @@ The Airbyte configuration is fully documented and production-ready.
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 ```bash
 # Install dependencies
 pip install dbt-bigquery
@@ -229,7 +229,7 @@ dbt docs serve
 
 ---
 
-## 🔮 Future Improvements
+##  Future Improvements
 
 - Connect Airbyte to live PostgreSQL and replace seed data
 - Add dbt Exposures for dashboard dependencies
@@ -241,7 +241,7 @@ dbt docs serve
 
 ---
 
-## 🎯 Design Decisions
+##  Design Decisions
 
 1. Ephemeral intermediate models — avoids storing redundant tables, keeps lineage clean
 2. Incremental fct_trips — production-ready for scale, reduces BigQuery scan costs
@@ -251,7 +251,7 @@ dbt docs serve
 
 ---
 
-## ⚖️ Tradeoffs
+##  Tradeoffs
 
 | Decision | Tradeoff |
 |----------|----------|
@@ -262,14 +262,14 @@ dbt docs serve
 
 ---
 
-## 👤 Author
+##  Author
 Pamela Uzodimma
 Data Engineering Project — BeejanRide Analytics Platform
 Built with dbt Core + BigQuery + Airbyte
 
 ---
 
-## 📸 Screenshots
+##  Screenshots
 
 ### dbt Lineage Graph
 ![dbt Lineage](docs/lineage.png)
@@ -288,7 +288,7 @@ Built with dbt Core + BigQuery + Airbyte
 
 ---
 
-## 🔄 Data Flow Explanation
+##  Data Flow Explanation
 
 ### End-to-End Pipeline
 ```
