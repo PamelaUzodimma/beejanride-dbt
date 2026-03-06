@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: fct_trips
+    columns:
+      - name: driver_id
+        tests:
+          - relationships:
+              to: ref('dim_drivers')
+              field: driver_id
+      - name: rider_id
+        tests:
+          - relationships:
+              to: ref('dim_riders')
+              field: rider_id
+      - name: trip_id
+        tests:
+          - relationships:
+              to: ref('fct_payments')
+              field: trip_id

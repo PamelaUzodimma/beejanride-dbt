@@ -285,3 +285,54 @@ Built with dbt Core + BigQuery + Airbyte
 
 ### dbt Build Results
 ![dbt Build](docs/beejanride1.png)
+
+---
+
+## 🔄 Data Flow Explanation
+
+### End-to-End Pipeline
+```
+1. SOURCE
+   PostgreSQL (Supabase)
+   Tables: trips, drivers, riders, payments, cities, driver_status_events
+   
+2. INGESTION (Airbyte)
+   - Connects to PostgreSQL via connection pooler
+   - Full Refresh / Overwrite for dimension tables
+   - Incremental / Append for driver_status_events (high volume)
+   - Lands data in BigQuery: beejanride_raw schema
+
+3. STAGING (dbt views)
+   - Reads from beejanride_raw
+   - Cleans, casts, deduplicates
+   - stg_driver_status_events: incremental (partitioned by event_date)
+   - All others: views (lightweight, no storage cost)
+
+4. INTERMEDIATE (dbt ephemeral)
+   - Reads from staging via ref()
+   - Computes business logic: duration, LTV, fraud flags, net revenue
+   - Ephemeral = embedded into downstream SQL, not stored
+
+5. MARTS (dbt tables)
+   - Reads from intermediate via ref()
+   - fct_trips: incremental table, partitioned by trip_date
+   - fct_payments: full table
+   - dim_drivers: full table
+   - dim_riders: full table
+
+6. SNAPSHOTS (dbt snapshot)
+   - Reads from stg_drivers
+   - Creates SCD Type 2 history in snapshots schema
+   - Tracks: driver_status, vehicle_id, driver_rating
+
+7. CONSUMPTION
+   - BI Tools connect to marts layer
+   - Analytical queries run against fct_trips, fct_payments, dim_drivers, dim_riders
+```
+
+### Data Freshness SLA
+| Table | Expected Freshness | Alert Threshold |
+|-------|-------------------|-----------------|
+| trips_raw | Every hour | Warn: 1hr, Error: 2hr |
+| driver_status_events_raw | Every 30 mins | Warn: 30min, Error: 1hr |
+| All other raw tables | Daily | Warn: 1hr, Error: 2hr |

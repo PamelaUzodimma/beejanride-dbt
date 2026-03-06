@@ -118,3 +118,6 @@ models:
         description: "Date payment was processed"
       - name: payment_created_at
         description: "Full timestamp of payment processing"
+
+  - name: fct_trips_relationships
+    description: "Relationship tests between fact and dimension tables"
